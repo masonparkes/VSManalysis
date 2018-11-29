@@ -7,6 +7,8 @@ Mcold=dataCold(:,21);
 Mroom=dataRoom(:,21);
 Mroom=Mroom./max(Mroom);
 Mcold=Mcold./max(Mcold);
+%Mcold=smooth(Mcold);%I smooth it twice because otherwise the highpoints 
+%Mcold=smooth(Mcold);%on the derivative are noise at the end.
 plot(Fcold,Mcold,Froom,Mroom)
 legend('25K','300K');
 title('VSM data');
@@ -24,7 +26,9 @@ for n=1:size(FDroom,1)
    FDroom(n)=(Froom(n)+Froom(n+1))/2; 
 end
 Droom=Droom./max(Droom);
+Dcold=smooth(Dcold);
 Dcold=Dcold./max(Dcold);
+
 figure;
 plot(FDcold,Dcold,FDroom,Droom);
 legend('25K','300K');
@@ -32,7 +36,33 @@ title('First Derivatives');
 
 figure;
 plot(Fcold,Mcold,Froom,Mroom,FDcold,Dcold,FDroom,Droom);
+legend('25k','300k','25k derivative','300k derivative');
 title('Overlaid Plots');
+
+[~,aIroom]=max(Droom);
+[~,dIroom]=max(-Droom);
+[~,aIcold]=max(Dcold);
+[~,dIcold]=max(-Dcold);
+
+CenterRoom=(FDroom(aIroom)+FDroom(dIroom))/2
+CenterCold=(FDcold(aIcold)+FDcold(dIcold))/2
+
+figure;
+plot(Froom,abs(1./Mroom),Fcold,abs(1./Mcold));
+legend('300k','25k');
+title('inverted magentizationloops');
+
+%%interpolating the original data
+[~,middleindex]=min(Froom);
+step=.01;
+newFroom=[Froom(1):step:Froom(middleindex),Froom(middleindex):step:Froom(end)];
+newMroom=spline(Froom,Mroom,newFroom);
+figure;
+plot(Froom,Mroom,newFroom,newMroom)
+
+
+
+
 
 
 
