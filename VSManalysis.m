@@ -54,12 +54,18 @@ title('inverted magentizationloops');
 
 %%interpolating the original data
 [~,middleindex]=min(Froom);
-step=.01;
-newFroom=[Froom(1):step:Froom(middleindex),Froom(middleindex):step:Froom(end)];
-newMroom=spline(Froom,Mroom,newFroom);
+step=1;
+newDesFroom=Froom(1):-step:Froom(middleindex);
+newAscFroom=Froom(middleindex):step:Froom(end);
+newDesMroom=interp1(Froom(1:middleindex),Mroom(1:middleindex),newDesFroom,'linear');
+newAscMroom=interp1(Froom(middleindex:end),Mroom(middleindex:end),newAscFroom,'linear');
+newMroom=[newDesMroom,newAscMroom];
+newFroom=[newDesFroom,newAscFroom];
 figure;
-plot(Froom,Mroom,newFroom,newMroom)
-
+hold on;
+plot(Froom,Mroom);
+plot(newFroom,newMroom);
+hold off;
 
 
 
