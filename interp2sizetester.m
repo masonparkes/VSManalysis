@@ -7,14 +7,11 @@ Froom=dataRoom(:,14);
 Mcold=dataCold(:,21);
 Mroom=dataRoom(:,21);
 
-vals=11:10:1000;
-%results=zeros(size(vals));
+vals=11:10:10000;
+results=zeros(size(vals));
 
-for n=vals
-    [f,m]=interp2size(Froom,Mroom,n);
-    size(m)
-    plot(Froom,Mroom,f,m);
-    title(n)
-    legend('raw','interpolated')
-    pause
+for n=1:size(vals,2)
+    [f,m]=interp2size(Froom,Mroom,vals(n));
+    results(n)=size(m,2);
 end
+results==vals

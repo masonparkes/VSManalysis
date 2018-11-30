@@ -62,8 +62,10 @@ title('inverted magentizationloops');
 CenterRoom=(FDroom(aIroom)+FDroom(dIroom))/2
 CenterCold=(FDcold(aIcold)+FDcold(dIcold))/2
 
-
-
+Ok, so the issue is that we have a weird shape nd we want a hysteresis loop
+What are the possible issues?
+1) there is mangeto resistance adding to our sample
+2) there are other com
 
 
 
