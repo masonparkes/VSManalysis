@@ -51,9 +51,12 @@ CenterCold=(FDcold(aIcold)+FDcold(dIcold))/2
 [fc,mc]=interp2size(Fcold,Mcold,10001);
 [fr,mr]=interp2size(Froom,Mroom,10001);
 figure;
+hold on
 plot(fr,(1./(mr-mean(mr))),fc,(1./(mc-mean(mc))));
 legend('300k','25k');
 title('inverted magentizationloops');
+hold off;
+
 [~,aIroom]=max(Droom);
 [~,dIroom]=max(-Droom);
 [~,aIcold]=max(Dcold);
@@ -62,10 +65,35 @@ title('inverted magentizationloops');
 CenterRoom=(FDroom(aIroom)+FDroom(dIroom))/2
 CenterCold=(FDcold(aIcold)+FDcold(dIcold))/2
 
-Ok, so the issue is that we have a weird shape nd we want a hysteresis loop
-What are the possible issues?
-1) there is mangeto resistance adding to our sample
-2) there are other com
+figure;
+plot(fr,-abs(mr))
+
+
+[fr,mr]=interp2size(fr,mr,201);
+%%linear component
+dy=-.00005;
+
+linearPart=tanh(fr/2000)/70;
+%noise
+noise=rand(size(mr))/8;
+subplot(2,2,1)
+hold on;
+title('noise')
+plot(fr,noise);
+xlabel('applied field');
+hold off;
+subplot(2,2,2)
+title('linear-ish correction');
+plot(fr, linearPart);
+xlabel('applied field');
+subplot(2,2,3)
+title('noise+linear+signal')
+plot(fr,mr+linearPart+noise);
+xlabel('applied field');
+subplot(2,2,4)
+plot(fr,-abs(mr+noise+linearPart))
+title('negative absolute value of noise added hysteresis loop')
+xlabel('applied field');
 
 
 
